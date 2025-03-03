@@ -8,7 +8,6 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
   <title>Tourism & Travel System</title>
-
   <!-- Favicons -->
   <link href="/static/assets/img/favicon.png" rel="icon">
   <link href="/static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -17,6 +16,7 @@
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
+  <link href="/static/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
   <link href="/static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="/static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="/static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
@@ -25,60 +25,58 @@
 
   <!-- Template Main CSS File -->
   <link href="/static/assets/css/style.css" rel="stylesheet">
-
 </head>
 
 <body>
   <main id="main">
-    <!-- ======= Admin Login Section ======= -->
+    <!-- ======= Registration Section ======= -->
     <section id="contact" class="contact">
       <div class="container">
-
         <div class="section-title">
-          <h2>Admin Login</h2>
+          <h2>Admin Registration Page</h2>
         </div>
-
         <div class="row">
+          {% if msg %}
           <div class="section-title">
-            <h3>{{ msg }}</h3>
+            <h3 style="color:red;">{{ msg }}</h3>
           </div>
-
-          <!-- Login Form -->
+          {% endif %}
           <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
-            <form action="/adminlogincheck" method="post">
+            <form action="/adminregister" method="post">
               <div class="row">
                 <div class="form-group col-md-6">
-                  <label for="name">Login Name</label>
-                  <input type="text" name="uname" class="form-control" id="name" required>
+                  <label for="uname">Username</label>
+                  <input type="text" name="uname" class="form-control" id="uname" required>
                 </div>
-                <div class="form-group col-md-6 mt-3 mt-md-0">
-                  <label for="password">Password</label>
-                  <input type="password" class="form-control" name="pwd" id="password" required>
+                <div class="form-group col-md-6">
+                  <label for="email">Email</label>
+                  <input type="email" name="email" class="form-control" id="email" required>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="form-group col-md-6">
+                  <label for="pwd">Password</label>
+                  <input type="password" name="pwd" class="form-control" id="pwd" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="cpwd">Confirm Password</label>
+                  <input type="password" name="cpwd" class="form-control" id="cpwd" required>
                 </div>
               </div>
               <br>
               <div class="text-center">
-                <button type="submit" class="btn btn-primary">Admin Login</button>
+                <button type="submit">Register Admin</button>
               </div>
             </form>
           </div>
-
-          <!-- Registration Section -->
-          <div class="col-lg-5 mt-5 mt-lg-0 d-flex align-items-center flex-column">
-            <div class="section-title text-center">
-              <h3>New Admin? Register Here</h3>
-            </div>
-            <a href="/adminregister" class="btn btn-success">Register</a>
-          </div>
-
         </div>
-
       </div>
-    </section><!-- End Admin Login Section -->
-
+    </section><!-- End Registration Section -->
   </main><!-- End #main -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
 
   <!-- Vendor JS Files -->
   <script src="/static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -89,7 +87,6 @@
 
   <!-- Template Main JS File -->
   <script src="/static/assets/js/main.js"></script>
-
 </body>
 
 </html>

@@ -49,6 +49,41 @@ def userviewbookings():
     except Exception as e:
         return str(e)
 """
+
+@app.route('/adminregister', methods=['GET', 'POST'])
+def adminregister():
+    msg = ""
+    if request.method == 'POST':
+        uname = request.form.get('uname').strip()
+        email = request.form.get('email').strip()
+        pwd = request.form.get('pwd').strip()
+        cpwd = request.form.get('cpwd').strip()
+
+        if pwd != cpwd:
+            msg = "Passwords do not match."
+            return render_template("adminregister.html", msg=msg)
+
+        db = firestore.client()
+        admin_ref = db.collection('newadmin')
+
+        # Check if an admin with the same email already exists
+        existing_admins = admin_ref.where('Email', '==', email).get()
+        if existing_admins:
+            msg = "An admin with this email already exists."
+        else:
+            admin_id = str(random.randint(1000, 9999))
+            admin_data = {
+                'id': admin_id,
+                'UserName': uname,
+                'Password': pwd,  # In production, hash your password!
+                'Email': email,
+            }
+            admin_ref.document(admin_id).set(admin_data)
+            msg = "Admin registered successfully. Please login."
+            return redirect(url_for('adminlogin'))
+    return render_template("adminregister.html", msg=msg)
+
+
 @app.route('/adminviewbookings', methods=['POST','GET'])
 def adminviewbookings():
     try:
@@ -512,16 +547,31 @@ def adminviewcontacts():
     except Exception as e:
         return str(e)
 
-@app.route('/adminlogincheck', methods=['POST','GET'])
+@app.route('/adminlogincheck', methods=['POST', 'GET'])
 def adminlogincheck():
+    msg = ""
     if request.method == 'POST':
-        uname = request.form['uname']
-        pwd = request.form['pwd']
-    ##print("Uname : ", uname, " Pwd : ", pwd)
-    if uname == "admin" and pwd == "admin":
-        return render_template("adminmainpage.html")
-    else:
-        return render_template("adminlogin.html", msg="UserName/Password is Invalid")
+        uname = request.form.get('uname', "").strip()
+        pwd = request.form.get('pwd', "").strip()
+
+        # Connect to Firestore and query the newadmin collection
+        db = firestore.client()
+        admin_ref = db.collection('newadmin')
+        # Query for an admin with matching UserName and Password
+        admins = list(admin_ref.where('UserName', '==', uname)
+                              .where('Password', '==', pwd)
+                              .get())
+        
+        if admins:
+            # Successful login
+            session['admin'] = uname  # or store admin id if preferred
+            return render_template("adminmainpage.html")
+        else:
+            msg = "UserName/Password is Invalid"
+
+    return render_template("adminlogin.html", msg=msg)
+
+
 
 @app.route('/contact',methods=['POST','GET'])
 def contactpage():

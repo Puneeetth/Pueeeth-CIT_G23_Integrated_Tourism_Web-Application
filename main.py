@@ -4,7 +4,7 @@ import razorpay
 import os
 import random
 from datetime import datetime, timedelta
-from flask import Flask, render_template, redirect, request, session
+from flask import Flask, jsonify, render_template, redirect, request, session
 import datetime
 from flask import redirect, session
 from flask import render_template, url_for
@@ -12,6 +12,8 @@ import firebase_admin
 import random
 from flask import Flask, request
 from firebase_admin import credentials, firestore
+from transformers import BlenderbotTokenizer, BlenderbotForConditionalGeneration
+
 TEMPLATE_DIR = os.path.abspath('templates')
 STATIC_DIR = os.path.abspath('static')
 app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)
@@ -49,6 +51,8 @@ def userviewbookings():
     except Exception as e:
         return str(e)
 """
+
+
 
 @app.route('/adminregister', methods=['GET', 'POST'])
 def adminregister():
@@ -140,6 +144,32 @@ def userviewbookings():
                                data=data, total=total, context=context)
     except Exception as e:
         return str(e)
+
+# Load BlenderBot model
+model_name = "facebook/blenderbot-400M-distill"
+tokenizer = BlenderbotTokenizer.from_pretrained(model_name)
+model = BlenderbotForConditionalGeneration.from_pretrained(model_name)
+
+# Serve the chatbot UI
+@app.route("/chatbot")
+def chatbot():
+    return render_template("chatbot.html")
+
+# Chatbot API for handling user queries
+@app.route("/get_response", methods=["POST"])
+def chatbot_response():
+    user_message = request.json.get("message", "")
+
+    if not user_message:
+        return jsonify({"response": "Please ask a question!"})
+
+    # Encode input and generate response
+    inputs = tokenizer(user_message, return_tensors="pt")
+    reply_ids = model.generate(**inputs)
+    bot_reply = tokenizer.decode(reply_ids[0], skip_special_tokens=True)
+
+    return jsonify({"response": bot_reply})
+
 
 @app.route('/usermakepayment', methods=['POST','GET'])
 def usermakepayment():

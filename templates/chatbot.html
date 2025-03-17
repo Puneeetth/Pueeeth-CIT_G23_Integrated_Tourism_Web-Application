@@ -10,72 +10,95 @@
         body {
             background-color: #f8f9fa;
         }
+        .chatbot-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #007bff;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            font-size: 24px;
+        }
         .chat-container {
-            width: 50%;
-            margin: 50px auto;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
             background: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: none;
         }
         .chat-box {
-            height: 300px;
+            height: 250px;
             overflow-y: auto;
             border: 1px solid #ddd;
             padding: 10px;
             border-radius: 5px;
             background: #fff;
         }
-        .user-message {
-            text-align: right;
-            color: blue;
-        }
         .bot-message {
             text-align: left;
             color: green;
         }
-        .input-group {
+        .question-buttons {
             margin-top: 10px;
+        }
+        .question-buttons button {
+            width: 100%;
+            margin-bottom: 5px;
+            text-align: left;
         }
     </style>
 </head>
 <body>
 
-<div class="chat-container">
-    <h4 class="text-center">Chat with Our Bot</h4>
+<div class="chatbot-icon" id="chatbot-icon">💬</div>
+
+<div class="chat-container" id="chat-container">
+    <h5 class="text-center">Chat with Our Bot</h5>
     <div class="chat-box" id="chat-box">
-        <p class="bot-message">Hello! How can I assist you?</p>
+        <p class="bot-message"><b>Bot:</b> Hello! How can I assist you?</p>
     </div>
-    <div class="input-group">
-        <input type="text" id="user-input" class="form-control" placeholder="Type your message...">
-        <button class="btn btn-primary" id="send-btn">Send</button>
+    <div class="question-buttons" id="question-buttons">
+        <button class="btn btn-outline-primary" onclick="sendQuestion('What are the popular tourist spots?')">What are the popular tourist spots?</button>
+        <button class="btn btn-outline-primary" onclick="sendQuestion('How do I book a tour?')">How do I book a tour?</button>
+        <button class="btn btn-outline-primary" onclick="sendQuestion('What are the tour prices?')">What are the tour prices?</button>
     </div>
 </div>
 
 <script>
     $(document).ready(function () {
-        $("#send-btn").click(function () {
-            let userMessage = $("#user-input").val().trim();
-            if (userMessage === "") return;
-
-            $("#chat-box").append(`<p class="user-message"><b>You:</b> ${userMessage}</p>`);
-
-            $.ajax({
-                url: "/get_response",
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({ message: userMessage }),
-                success: function (data) {
-                    $("#chat-box").append(`<p class="bot-message"><b>Bot:</b> ${data.response}</p>`);
-                    $("#user-input").val(""); // Clear input field
-                    $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight); // Auto-scroll to the latest message
-                },
-                error: function () {
-                    $("#chat-box").append(`<p class="bot-message"><b>Bot:</b> Sorry, something went wrong.</p>`);
-                }
-            });
+        $("#chatbot-icon").click(function () {
+            $("#chat-container").toggle();
         });
     });
+
+    function sendQuestion(question) {
+        $("#chat-box").append(`<p class='user-message'><b>You:</b> ${question}</p>`);
+        
+        $.ajax({
+            url: "/get_response",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ message: question }),
+            success: function (data) {
+                $("#chat-box").append(`<p class='bot-message'><b>Bot:</b> ${data.response}</p>`);
+                $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+            },
+            error: function () {
+                $("#chat-box").append(`<p class='bot-message'><b>Bot:</b> Sorry, something went wrong.</p>`);
+            }
+        });
+    }
 </script>
 
 </body>

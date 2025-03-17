@@ -12,7 +12,6 @@ import firebase_admin
 import random
 from flask import Flask, request
 from firebase_admin import credentials, firestore
-from transformers import BlenderbotTokenizer, BlenderbotForConditionalGeneration
 
 TEMPLATE_DIR = os.path.abspath('templates')
 STATIC_DIR = os.path.abspath('static')
@@ -24,6 +23,7 @@ app.config['UPLOAD_FOLDER'] = 'static/upload'
 app.secret_key = 'Event@12345'
 cred = credentials.Certificate("key.json")
 firebase_admin.initialize_app(cred)
+
 #key_id,key_secret
 #rzp_test_bwFUQvFdcBdnqI, NN9Yi7mL7s15FtqgWGOLr5Zp
 RAZOR_KEY_ID="rzp_test_bwFUQvFdcBdnqI"
@@ -145,30 +145,6 @@ def userviewbookings():
     except Exception as e:
         return str(e)
 
-# Load BlenderBot model
-model_name = "facebook/blenderbot-400M-distill"
-tokenizer = BlenderbotTokenizer.from_pretrained(model_name)
-model = BlenderbotForConditionalGeneration.from_pretrained(model_name)
-
-# Serve the chatbot UI
-@app.route("/chatbot")
-def chatbot():
-    return render_template("chatbot.html")
-
-# Chatbot API for handling user queries
-@app.route("/get_response", methods=["POST"])
-def chatbot_response():
-    user_message = request.json.get("message", "")
-
-    if not user_message:
-        return jsonify({"response": "Please ask a question!"})
-
-    # Encode input and generate response
-    inputs = tokenizer(user_message, return_tensors="pt")
-    reply_ids = model.generate(**inputs)
-    bot_reply = tokenizer.decode(reply_ids[0], skip_special_tokens=True)
-
-    return jsonify({"response": bot_reply})
 
 
 @app.route('/usermakepayment', methods=['POST','GET'])
@@ -228,13 +204,39 @@ def usermakepayment():
         # if other than POST request is made.
         #return HttpResponseBadRequest()
         return render_template('paymentfail.html')
+    
+    
+# Predefined chatbot responses
+responses = {
+    "What are the popular tourist spots?": "Some of the top tourist spots include the Eiffel Tower, Grand Canyon, and the Great Wall of China!",
+    "How do I book a tour?": "You can book a tour by visiting our 'Tours' section and selecting your preferred package.",
+    "What are the tour prices?": "Our tour prices start from $100 and vary based on the destination and duration."
+}
 
-@app.route('/', methods=['POST','GET'])
+@app.route("/", methods=["POST", "GET"])
 def homepage():
     try:
-        return render_template("index.html")
+        return render_template("index.html")  # Ensure index.html contains your chatbot UI
     except Exception as e:
         return str(e)
+
+@app.route('/get_response', methods=['POST'])
+def get_response():
+    data = request.get_json()
+    user_message = data.get('message', '').lower()
+
+    responses = {
+        "what are the popular tourist spots?": "Our popular tourist spots include the Eiffel Tower, Grand Canyon, and Bali beaches!",
+        "how do i book a tour?": "You can book a tour through our website by selecting a package and completing the booking form.",
+        "what are the tour prices?": "Our tour prices vary based on destination and package. Visit our website for details.",
+        "what are the best travel packages?": "We offer budget-friendly, premium, and adventure travel packages. Check our packages page!",
+        "do you offer discounts?": "Yes! We have seasonal discounts. Sign up for our newsletter to stay updated.",
+        "can i cancel a booking?": "Yes, you can cancel within 24 hours of booking for a full refund. After that, cancellation charges apply."
+    }
+
+    bot_response = responses.get(user_message, "I'm not sure about that. Please visit our FAQ page for more details!")
+
+    return jsonify({"response": bot_response})
 
 @app.route('/paymentsuccesspage', methods=['POST','GET'])
 def paymentsuccesspage():

@@ -5,102 +5,152 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="description">
-  <meta content="" name="keywords">
   <title>Tourism & Travel System</title>
+
   <!-- Favicons -->
   <link href="/static/assets/img/favicon.png" rel="icon">
   <link href="/static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Poppins" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="/static/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
   <link href="/static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="/static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="/static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="/static/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="/static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-
-  <!-- Template Main CSS File -->
   <link href="/static/assets/css/style.css" rel="stylesheet">
 
+  <style>
+    /* Draggable Chat Container */
+    .chat-container {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 300px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      display: none;
+      flex-direction: column;
+      cursor: grab;
+      z-index: 10000; /* Ensure chatbot is above other elements */
+    }
+    
+    /* Chatbot Open/Close Button */
+    .chatbot-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+      z-index: 9999;
+    }
+    
+    /* Chat Header */
+    .chat-header {
+      background: #007bff;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      border-radius: 10px 10px 0 0;
+      font-weight: bold;
+    }
+    
+    /* Chat Box */
+    .chat-box {
+      height: 250px;
+      overflow-y: auto;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      background-color: #ffffff; /* White background for maximum contrast */
+    }
+    
+    /* Message Styles */
+    .bot-message, .user-message {
+      color: #000 !important; /* Ensures text is dark black */
+      font-weight: bold;
+      background: #f8f9fa; /* Light gray bubble */
+      padding: 8px;
+      border-radius: 5px;
+      margin-bottom: 5px;
+      display: inline-block;
+    }
+    
+    /* Chat Footer */
+    .chat-footer {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      background: #f1f1f1;
+    }
+    
+    /* Chatbot Buttons */
+    .chat-footer button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px;
+      margin-top: 5px;
+      text-align: left;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    
+    .chat-footer button:hover {
+      background-color: #0056b3;
+    }
+    
+    /* Fix Transparency Issue */
+    .chat-container * {
+      opacity: 1 !important;
+    }
+    
+    
+  </style>
 </head>
 
 <body>
 
-
   <!-- ======= Hero Section ======= -->
   <section id="hero">
-    <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
-
-      <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
-
-      <div class="carousel-inner" role="listbox">
-
-        <!-- Slide 1 -->
-        <div class="carousel-item active" style="background-image: url(assets/img/slide/slide-1.jpg)">
+    <div class="carousel slide carousel-fade" id="heroCarousel" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active" style="background-image: url(/static/assets/img/slide/slide-1.jpg)">
           <div class="carousel-container">
             <div class="container">
-              <h2 class="animate__animated animate__fadeInDown">Welcome to <span>Tourism & Travel System</span></h2>
-              <p class="animate__animated animate__fadeInUp">"Tours & travels" refers to a company or service that specializes in arranging and managing travel packages for individuals or groups, typically including transportation, accommodation, sightseeing, and other activities, essentially planning a structured itinerary for a leisure trip to a specific destination or region.</p>
+              <h2>Welcome to <span>Tourism & Travel System</span></h2>
+              <p>Plan your perfect trip with us.</p>
             </div>
           </div>
         </div>
-
-        <!-- Slide 2 -->
-        <div class="carousel-item" style="background-image: url(assets/img/slide/slide-2.jpg)">
-          <div class="carousel-container">
-            <div class="container">
-              <h2 class="animate__animated animate__fadeInDown">Welcome to <span>Tourism & Travel System</span></h2>
-              <p class="animate__animated animate__fadeInUp">Tours are like a well-organized story with a beginning, middle, and end. Every day is planned out, and you follow the schedule. On the other hand, travel is like an open book.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 3 -->
-        <div class="carousel-item" style="background-image: url(assets/img/slide/slide-3.jpg)">
-          <div class="carousel-container">
-            <div class="container">
-              <h2 class="animate__animated animate__fadeInDown">Welcome to <span>Tourism & Travel System</span></h2>
-              <p class="animate__animated animate__fadeInUp">A travel agency is a private retailer or public service that provides travel and tourism-related services to the general public on behalf of accommodation or travel suppliers to offer different kinds of travelling packages for each destination.</p>
-            </div>
-          </div>
-        </div>
-
       </div>
-
-      <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
-      </a>
-
-      <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
-        <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
-      </a>
-
     </div>
-  </section><!-- End Hero -->
+  </section>
 
   <main id="main">
-
-    <!-- ======= Featured Services Section ======= -->
     <section id="featured-services" class="featured-services section-bg">
       <div class="container">
-
         <div class="row no-gutters">
           <div class="col-lg-4 col-md-6">
             <div class="icon-box">
               <div class="icon"><i class="bi bi-laptop"></i></div>
               <h4 class="title"><a href="">Focus on organized itineraries</a></h4>
-              <p class="description">Unlike simply booking flights and hotels, a "tour" implies a pre-planned schedule with guided experiences, often including sightseeing, cultural visits, and specific meals.</p>
+              <p class="description">Unlike simply booking flights and hotels, a "tour" implies a pre-planned schedule with guided experiences.</p>
             </div>
           </div>
           <div class="col-lg-4 col-md-6">
             <div class="icon-box">
               <div class="icon"><i class="bi bi-briefcase"></i></div>
               <h4 class="title"><a href="">Variety of packages</a></h4>
-              <p class="description">Tours & travels can cater to different interests, such as adventure tours, cultural tours, family holidays, honeymoon packages, or even specialized theme-based tours. </p>
+              <p class="description">Tours & travels can cater to different interests, such as adventure tours, cultural tours, and family holidays.</p>
             </div>
           </div>
           <div class="col-lg-4 col-md-6">
@@ -111,23 +161,91 @@
             </div>
           </div>
         </div>
-
       </div>
-    </section><!-- End Featured Services Section -->
+    </section>
+  </main>
 
-  </main><!-- End #main -->
+  <!-- ======= Chatbot ======= -->
+  <div class="chatbot-button" id="chatbot-button">
+    <i class="bi bi-chat-dots-fill"></i>
+  </div>
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <div class="chat-container" id="chat-container">
+    <div class="chat-header">Chat with Us</div>
+    <div class="chat-box" id="chat-box">
+      <p class="bot-message"><b>Bot:</b> Hello! How can I help you?</p>
+    </div>
+    <div class="chat-footer">
+      <button class="btn btn-light btn-sm" onclick="sendQuestion('What are the popular tourist spots?')">Popular Spots</button>
+      <button class="btn btn-light btn-sm" onclick="sendQuestion('How do I book a tour?')">Book a Tour</button>
+      <button class="btn btn-light btn-sm" onclick="sendQuestion('What are the tour prices?')">Tour Prices</button>
+      <button class="btn btn-light btn-sm" onclick="sendQuestion('What are the best travel packages?')">Best Packages</button>
+      <button class="btn btn-light btn-sm" onclick="sendQuestion('Do you offer discounts?')">Discounts</button>
+      <button class="btn btn-light btn-sm" onclick="sendQuestion('Can I cancel a booking?')">Cancel Booking</button>
+    </div>
+    
+  </div>
 
-  <!-- Vendor JS Files -->
-  <script src="/static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="/static/assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="/static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="/static/assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="/static/assets/vendor/php-email-form/validate.js"></script>
+  <!-- Chatbot Script -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#chatbot-button").click(function () {
+        $("#chat-container").toggle();
+      });
 
-  <!-- Template Main JS File -->
-  <script src="/static/assets/js/main.js"></script>
+      makeDraggable(document.getElementById("chatbot-button"));
+      makeDraggable(document.getElementById("chat-container"), document.getElementById("chat-header"));
+    });
+
+    function sendQuestion(question) {
+      $("#chat-box").append(`<p class="user-message"><b>You:</b> ${question}</p>`);
+      $.ajax({
+        url: "/get_response",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({ message: question }),
+        success: function (data) {
+          $("#chat-box").append(`<p class="bot-message"><b>Bot:</b> ${data.response}</p>`);
+          $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+        },
+        error: function () {
+          $("#chat-box").append(`<p class="bot-message"><b>Bot:</b> Sorry, something went wrong.</p>`);
+          $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+        }
+      });
+    }
+
+    function makeDraggable(element, handle = element) {
+      let offsetX, offsetY, isDragging = false;
+
+      handle.addEventListener("mousedown", function (e) {
+        isDragging = true;
+        offsetX = e.clientX - element.offsetLeft;
+        offsetY = e.clientY - element.offsetTop;
+        element.style.cursor = "grabbing";
+      });
+
+      document.addEventListener("mousemove", function (e) {
+        if (!isDragging) return;
+
+        let newX = e.clientX - offsetX;
+        let newY = e.clientY - offsetY;
+
+        let maxX = window.innerWidth - element.offsetWidth;
+        let maxY = window.innerHeight - element.offsetHeight;
+
+        element.style.left = Math.max(0, Math.min(newX, maxX)) + "px";
+        element.style.top = Math.max(0, Math.min(newY, maxY)) + "px";
+      });
+
+      document.addEventListener("mouseup", function () {
+        isDragging = false;
+        element.style.cursor = "grab";
+      });
+    }
+  </script>
 </body>
+
 </html>
 {% endblock %}
